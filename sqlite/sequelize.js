@@ -48,6 +48,27 @@ async function getCountries({ startYear, endYear }) {
   });
 }
 
+async function getCountryWithParameters({ id, startYear, endYear, category }) {
+  const categoriesArr = category.split(',')
+  return inventory.findAll({
+    where: {
+      id,
+      year: {
+        [Op.and]: {
+          [Op.lte]: endYear,
+          [Op.gte]: startYear,
+        },
+      },
+      category: {
+        [Op.or]: categoriesArr,
+      },
+    },
+  });
+}
+
+
+
+
 async function insertIntoInventory(row) {
   return inventory.create({
     ...row,
@@ -65,5 +86,5 @@ async function generateDb(dataArr) {
 }
 
 module.exports = {
-  generateDb, getCountries, inventory
+  generateDb, getCountries, inventory, getCountryWithParameters
 };
