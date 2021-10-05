@@ -5,6 +5,7 @@ const { generateDb } = require('../sqlite/sequelize');
 
 const parser = parse({columns: true}, function (err, records) {
     let dBrows = [];
+    let countryArr = [];
     for(let record of records){
         if(record.category && record.category.startsWith('carbon_dioxide_co2')) {
             record.category = 'CO2';
@@ -25,6 +26,12 @@ const parser = parse({columns: true}, function (err, records) {
         } else if(record.category && record.category.startsWith('unspecified_mix_of_hydrofluorocarbons_hfcs_and_perfluorocarbons_pfcs')) {
             record.category = 'FLOUROCARBONSMIX';
         }
+
+        if(countryArr.indexOf(record.country_or_area) === -1) {
+            countryArr.push(record.country_or_area);
+        }
+        record.country_id = countryArr.indexOf(record.country_or_area) + 1;
+
         dBrows.push(record);
     }
      // console.log(dBrows);

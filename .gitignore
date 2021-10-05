@@ -1,4 +1,4 @@
 /node_modules
-dockerfile
+Dockerfile
 database-setup.sh
 .idea

@@ -9,8 +9,9 @@ const { buildDbFromCsv } = require('./csvHelpers/databaseBuilder');
 const inventoryRouter = require('./routes/leads');
 
 
-inventory.sync();
-buildDbFromCsv();
+// uncomment to regenerate the db from the csv file  from ./csvHelpers
+// inventory.sync();
+// buildDbFromCsv();
 
 const app = express();
 
@@ -23,7 +24,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.use('/api', inventoryRouter);
 

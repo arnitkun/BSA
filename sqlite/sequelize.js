@@ -1,16 +1,16 @@
 const { Sequelize, DataTypes, Model, Op } = require('sequelize');
 
-const sequelize = new Sequelize('sqlite::memory');
-
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: './database.sqlite'
+});
 class inventoryClass extends Model {}
 
 const inventory = inventoryClass.init({
-  id: {
+  country_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,
-    unique: true,
+    unique: false,
   },
   country_or_area: {
     type: DataTypes.STRING,
@@ -48,12 +48,33 @@ async function getCountries({ startYear, endYear }) {
   });
 }
 
+async function getCountryWithParameters({ country_id, startYear, endYear, category }) {
+  const categoriesArr = category.split(',')
+  return inventory.findAll({
+    where: {
+      country_id,
+      year: {
+        [Op.and]: {
+          [Op.lte]: endYear,
+          [Op.gte]: startYear,
+        },
+      },
+      category: {
+        [Op.or]: categoriesArr,
+      },
+    },
+  });
+}
+
+
+
+
 async function insertIntoInventory(row) {
   return inventory.create({
     ...row,
     status: 'Created',
   }, {
-    fields: ['country_or_area', 'year', 'value', 'category'],
+    fields: ['country_id', 'country_or_area', 'year', 'value', 'category'],
   });
 }
 
@@ -65,5 +86,5 @@ async function generateDb(dataArr) {
 }
 
 module.exports = {
-  generateDb, getCountries, inventory
+  generateDb, getCountries, inventory, getCountryWithParameters
 };

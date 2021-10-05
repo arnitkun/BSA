@@ -1,8 +1,8 @@
 const { validateJsConfObj } = require('./configChecker');
 
-function isLeadValid(leadObj) {
-  const { error } = validateJsConfObj(leadObj);
+function isRequestValid(reqObj) {
+  const { error } = validateJsConfObj(reqObj);
   return !error;
 }
 
-module.exports = { isLeadValid };
+module.exports = { isRequestValid };
