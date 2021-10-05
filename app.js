@@ -8,7 +8,6 @@ const { inventory } = require('./sqlite/sequelize');
 const { buildDbFromCsv } = require('./csvHelpers/databaseBuilder');
 const inventoryRouter = require('./routes/leads');
 
-
 // uncomment to regenerate the db from the csv file  from ./csvHelpers
 // inventory.sync();
 // buildDbFromCsv();

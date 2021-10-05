@@ -1,8 +1,10 @@
-const { Sequelize, DataTypes, Model, Op } = require('sequelize');
+const {
+  Sequelize, DataTypes, Model, Op,
+} = require('sequelize');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './database.sqlite'
+  storage: './database.sqlite',
 });
 class inventoryClass extends Model {}
 
@@ -41,15 +43,19 @@ async function getCountries({ startYear, endYear }) {
       year: {
         [Op.and]: {
           [Op.lt]: endYear,
-          [Op.gte]: startYear
-        }
+          [Op.gte]: startYear,
+        },
       },
     },
   });
 }
 
-async function getCountryWithParameters({ country_id, startYear, endYear, category }) {
-  const categoriesArr = category.split(',')
+async function getCountryWithParameters({
+  // disabled camel case rule to keep the same name for variables
+  // eslint-disable-next-line camelcase
+  country_id, startYear, endYear, category,
+}) {
+  const categoriesArr = category.split(',');
   return inventory.findAll({
     where: {
       country_id,
@@ -66,9 +72,6 @@ async function getCountryWithParameters({ country_id, startYear, endYear, catego
   });
 }
 
-
-
-
 async function insertIntoInventory(row) {
   return inventory.create({
     ...row,
@@ -78,13 +81,14 @@ async function insertIntoInventory(row) {
   });
 }
 
-
 async function generateDb(dataArr) {
-  for (let row of dataArr) {
-    await insertIntoInventory(row)
+  // eslint-disable-next-line no-restricted-syntax
+  for (const row of dataArr) {
+    // eslint-disable-next-line no-await-in-loop
+    await insertIntoInventory(row);
   }
 }
 
 module.exports = {
-  generateDb, getCountries, inventory, getCountryWithParameters
+  generateDb, getCountries, inventory, getCountryWithParameters,
 };
