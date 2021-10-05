@@ -42,16 +42,10 @@ router.route('/country/:country_id')
       });
     } else {
       try {
-        if (startYear && endYear) {
-          const data = await getCountryWithParameters({
-            country_id, startYear, endYear, category,
-          });
-          res.send(data);
-        } else {
-          res.send({
-            message: 'start or end date missing',
-          });
-        }
+        const data = await getCountryWithParameters({
+          country_id, startYear, endYear, category,
+        });
+        res.send(data);
       } catch (e) {
         res.send({
           reason: e,
