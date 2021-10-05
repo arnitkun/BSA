@@ -1,8 +1,13 @@
-const { validateJsConfObj } = require('./configChecker');
+const { validateJsConfObj, validateConfObjForAllCountries } = require('./configChecker');
 
-function isRequestValid(reqObj) {
+function isGetCountryByCategoryValid(reqObj) {
   const { error } = validateJsConfObj(reqObj);
   return error;
 }
 
-module.exports = { isRequestValid };
+function validateAllCountryReq(reqObj) {
+  const { error } = validateConfObjForAllCountries(reqObj);
+  return error;
+}
+
+module.exports = { isGetCountryByCategoryValid, validateAllCountryReq };

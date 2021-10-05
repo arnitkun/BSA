@@ -1,5 +1,5 @@
 const express = require('express');
-const { isRequestValid } = require('../routeHandlers/helpers/validator');
+const { isGetCountryByCategoryValid, validateAllCountryReq } = require('../routeHandlers/helpers/validator');
 
 const router = express.Router();
 
@@ -10,12 +10,20 @@ const {
 router.route('/countries')
   .get(async (req, res) => {
     const { startYear, endYear } = req.query;
-    if (startYear && endYear && typeof startYear === 'number' && typeof endYear === 'number') {
-      const data = await getCountries({ startYear, endYear });
-      res.status(200).send(data);
-    } else {
-      res.status(400).send({
-        message: 'start or end year missing or not a number',
+    try {
+      const isRequestValidError = validateAllCountryReq({ startYear, endYear });
+      console.log({ isRequestValidError });
+      if (isRequestValidError) {
+        res.send({
+          message: isRequestValidError.message,
+        });
+      } else {
+        const data = await getCountries({ startYear, endYear });
+        res.send(data);
+      }
+    } catch (e) {
+      res.send({
+        message: e,
       });
     }
   });
@@ -26,7 +34,7 @@ router.route('/country/:country_id')
     // eslint-disable-next-line camelcase
     const { country_id } = req.params;
 
-    const isRequestValidError = isRequestValid({ startYear, endYear, category });
+    const isRequestValidError = isGetCountryByCategoryValid({ startYear, endYear, category });
     console.log({ isRequestValidError });
     if (isRequestValidError) {
       res.send({
