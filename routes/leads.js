@@ -20,16 +20,18 @@ router.route('/countries')
       }
   });
 
-router.route('/country/:id')
+router.route('/country/:country_id')
   .get(async (req, res) => {
     const { startYear, endYear, category } = req.query;
-    const { id } = req.params;
+    const { country_id } = req.params;
+    console.log({
+        country_id
+    })
       try {
-          isRequestValid({ id, startYear, endYear, category})
+          isRequestValid({ country_id, startYear, endYear, category})
           if (startYear && endYear) {
-              const data = await getCountryWithParameters({ id, startYear, endYear, category });
+              const data = await getCountryWithParameters({ country_id, startYear, endYear, category });
               res.send(data);
-              // res.send('hello')
           } else {
               res.send({
                   message: 'start or end date missing',

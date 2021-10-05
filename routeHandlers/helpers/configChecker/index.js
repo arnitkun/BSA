@@ -1,7 +1,6 @@
 const Joi = require('joi');
 
 const CONFIG_CHECKER_SCHEMA = Joi.object().keys({
-  id: Joi.number().required(),
   startYear: Joi.number().required(),
   endYear: Joi.number().required(),
   category: Joi.string().required()
