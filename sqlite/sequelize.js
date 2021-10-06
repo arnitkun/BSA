@@ -42,7 +42,7 @@ async function getCountries({ startYear, endYear }) {
     where: {
       year: {
         [Op.and]: {
-          [Op.lt]: endYear,
+          [Op.lte]: endYear,
           [Op.gte]: startYear,
         },
       },
